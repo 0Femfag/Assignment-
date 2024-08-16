@@ -1,15 +1,30 @@
-const express = require("express");
-const routes = express.Router();
-const {
-  createUser,
-  getUsers,
-  updateUser,
-  deleteUser,
-} = require("../controllers/user");
+const mongoose = require("mongoose");
 
-routes.post("/get-all-users", createUser);
-routes.get("/get-all-users", getUsers);
-routes.put("/get-all-user", updateUser);
-routes.delete("/get-all-user", deleteUser);
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    gender: {
+      type: String,
+      enum: ["Male", "Female"],
+    },
+    age: {
+      type: Number,
+    },
+  },
+  { timestamps: true }
+);
 
-module.exports = routes;
+const userModel = mongoose.model("PRETERNATURAL", userSchema);
+module.exports = userModel;
